@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "DomBuketa"
 include ':app'
+include ':db_module'
+include ':net_module'

@@ -1,24 +1,21 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-parcelize'
     id "kotlin-kapt"
 }
 
 apply from: "$project.rootDir/versions.gradle"
 
 android {
-    namespace 'ru.ansmos.dombuketa'
+    namespace 'ru.ansmos.dombuketa.db_module'
     compileSdk 32
 
     defaultConfig {
-        applicationId "ru.ansmos.dombuketa"
         minSdk 29
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -37,13 +34,16 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':net_module')
-    implementation project(path: ':db_module')
 
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    //Dagger
+    implementation dagger
+    kapt daggerCompiler
+    //Room
+    implementation room
+    implementation roomRxJava
+    kapt roomCompiler
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
