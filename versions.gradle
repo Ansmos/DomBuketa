@@ -1,0 +1,12 @@
+ext {
+    dagger_version = '2.45'
+    dagger = "com.google.dagger:dagger:$dagger_version"
+    daggerCompiler = "com.google.dagger:dagger-compiler:$dagger_version"
+
+    room_version = '2.4.0'
+    room_runtime = "androidx.room:room-runtime:$room_version"
+    room_ktx = "androidx.room:room-ktx:$room_version" //Flow, coroutine
+    room_rxjava = "androidx.room:room-rxjava3:$room_version" //RxJava
+    room_kapt = "androidx.room:room-compiler:$room_version"
+
+}
