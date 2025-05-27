@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_nemu_home"
+        android:icon="@drawable/ic_outline_florist_24"
+        android:title="@string/menu_home_title_text"/>
+    <item
+        android:id="@+id/nav_nemu_favorites"
+        android:icon="@drawable/ic_outline_favorite_24"
+        android:title="@string/menu_favorits_title_text"
+        app:showAsAction="withText"></item>
+    <item
+        android:id="@+id/nav_nemu_shopping_cart"
+        android:icon="@drawable/ic_outline_shopping_cart_24"
+        android:title="@string/menu_shopping_cart_title_text"
+        app:showAsAction="withText"></item>
+    <item
+        android:id="@+id/nav_nemu_deliver"
+        android:icon="@drawable/ic_outline_delivery_dining_24"
+        android:title="@string/menu_delivery_text"
+        app:showAsAction="withText"></item>
+    <item
+        android:id="@+id/nav_nemu_settings"
+        android:icon="@drawable/ic_outline_manage_accounts_24"
+        android:title="@string/menu_settings_title_text"
+        app:showAsAction="withText"></item>
+</menu>

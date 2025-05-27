@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DomBuketa</string>
+    <string name="menu_home_title_text">Товары</string>
+    <string name="menu_favorits_title_text">Избранное</string>
+    <string name="menu_shopping_cart_title_text">Корзина</string>
+    <string name="menu_delivery_text">Доставка</string>
+    <string name="menu_settings_title_text">Настройки</string>
 </resources>

@@ -7,4 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="bottom_nav_facade">#401274</color>
+
+    <color name="background_home_start_color">#FAFAF8</color>
+    <color name="background_home_end_color">#F4DDF8</color>
+    <color name="background_favorite_start_color">#FAFAF8</color>
+    <color name="background_favorite_end_color">#EFF1D5</color>
+    <color name="background_shoping_cart_start_color">#FAFAF8</color>
+    <color name="background_shoping_cart_end_color">#DDF1FA</color>
+
+    <color name="background_settings_start_color">#FAFAF8</color>
+    <color name="background_settings_end_color">#ACACAB</color>
+
+
 </resources>
