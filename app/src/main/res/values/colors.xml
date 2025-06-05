@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="bottom_nav_facade">#401274</color>
+    <color name="bottom_nav_background">#FAFAFA</color>
 
     <color name="background_home_start_color">#FAFAF8</color>
     <color name="background_home_end_color">#F4DDF8</color>
