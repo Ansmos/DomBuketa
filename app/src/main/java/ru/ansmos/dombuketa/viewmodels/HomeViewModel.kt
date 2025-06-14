@@ -8,7 +8,6 @@ import ru.ansmos.dombuketa.models_bll.Tag
 import javax.inject.Inject
 
 class HomeViewModel : ViewModel() {
-
     @Inject
     lateinit var interactor: Interactor
     val tagList : Observable<List<Tag>>
@@ -22,6 +21,5 @@ class HomeViewModel : ViewModel() {
         Observable.fromArray(interactor.getTagListFromAPI()).flatMap {
             tagList
         }
-
     }
 }

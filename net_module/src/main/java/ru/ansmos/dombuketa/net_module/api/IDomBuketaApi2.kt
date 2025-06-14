@@ -3,7 +3,9 @@ package ru.ansmos.dombuketa.net_module.api
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.ansmos.dombuketa.net_module.models_api.Item_api
+import ru.ansmos.dombuketa.net_module.ApiConstants
+import ru.ansmos.dombuketa.net_module.models_api.ProductList_api
+import ru.ansmos.dombuketa.net_module.models_api.Product_api
 import ru.ansmos.dombuketa.net_module.models_api.Tag_api
 
 interface IDomBuketaApi2 {
@@ -14,12 +16,13 @@ interface IDomBuketaApi2 {
         @Query("key") apiKey: String,
     ): Observable<List<Tag_api>>
 
-
-    //http://localhost:52682/api/2/items/tag/29?pageIndex=1&pageSize=10&key=3f86da7ac18eaf9e2906eb579c6be891
-    // Выборка товаров по тегу
+    //https://dom-buketa.ru/api/2/items/tag/29?pageIndex=1&pageSize=10&key=3f86da7ac18eaf9e2906eb579c6be891
+    // Выборка всех товаров (тег = 0) или по тегу
     @GET("2/items/tag/")
     fun getItems(
+        @Query("tag") tag: Int,
+        @Query("pageIndex") pageIndex: Int,
+        @Query("pageSize") pageSize: Int,
         @Query("key") apiKey: String,
-    ): Observable<List<Item_api>>
-
+    ): Observable<ProductList_api>
 }
