@@ -9,4 +9,7 @@
     <dimen name="item_simple_h_text_padding">8dp</dimen>
     <dimen name="item_simple_title_text_size">18sp</dimen>
     <dimen name="item_simple_desc_text_size">12sp</dimen>
+    <dimen name="item_carousel_product">120dp</dimen>
+    <dimen name="item_carousel_product_margun_top">80dp</dimen>
+    <dimen name="item_carousel_product_margun_left">40dp</dimen>
 </resources>

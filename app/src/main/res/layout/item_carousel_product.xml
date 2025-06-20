@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="tovar"
+            type="ru.ansmos.dombuketa.models_bll.Product" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="@dimen/item_simple_h_height">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/carousel_product_container"
+            android:layout_width="@dimen/item_carousel_product"
+            android:layout_height="@dimen/item_carousel_product"
+            android:layout_margin="@dimen/item_simple_h_card_margin"
+            android:elevation="1dp"
+            app:cardCornerRadius="@dimen/item_simple_h_card_corverradius">
+
+                <ImageView
+                    android:id="@+id/poster"
+                    android:layout_width="@dimen/item_carousel_product"
+                    android:layout_height="@dimen/item_carousel_product"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/no_foto_item"></ImageView>
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/item_carousel_product_margun_top"
+                    android:layout_marginLeft="@dimen/item_carousel_product_margun_left"
+                    android:textAlignment="center"
+                    android:padding="@dimen/item_simple_h_text_padding"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textSize="@dimen/item_simple_title_text_size"
+                    app:layout_constraintLeft_toRightOf="@id/poster"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1000p" />
+
+
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+</layout>

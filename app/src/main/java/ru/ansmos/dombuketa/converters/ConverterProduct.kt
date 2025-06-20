@@ -4,10 +4,12 @@ import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.net_module.models_api.Product_api
 
 object ConverterProduct {
-    fun apiList_DTOList(list: List<Product_api>): List<Product>{
+    fun apiList_DTOList(list: List<Product_api>?): List<Product>{
         val result = mutableListOf<Product>()
-        list.forEach {
-            result.add(api_DTO(it))
+        if (list != null) {
+            list.forEach {
+                result.add(api_DTO(it))
+            }
         }
         return  result
     }
