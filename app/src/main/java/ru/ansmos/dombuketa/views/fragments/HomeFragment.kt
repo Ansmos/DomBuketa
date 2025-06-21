@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,6 +27,7 @@ import ru.ansmos.dombuketa.helpers.addTo
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.viewmodels.HomeViewModel
 import ru.ansmos.dombuketa.views.MainActivity
+import ru.ansmos.dombuketa.views.rw.groupie.ItemCarousel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -47,6 +50,19 @@ class HomeFragment : Fragment() {
         initRV()
         initPullToRefresh()
         subscribeToProductListByTagListAll()
+        subscribeToProgressBar()
+    }
+
+    private fun subscribeToProgressBar() {
+        viewModel.showProgressBar
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                binding.root.findViewById<ProgressBar>(R.id.progress_bar).isVisible = it
+            },{
+                it.printStackTrace()
+            })
+            .addTo(autoDisposable)
     }
 
     private fun subscribeToProductListByTagListAll(){
@@ -119,11 +135,8 @@ class HomeFragment : Fragment() {
     fun onProductItemClick(product: Product, pos: Int) {
         println("onProductItemClick: Id=${product.id} - ${product.name}, price=${product.price.price}")
     }
-    fun onCarouselCardScroll(pos: Observable<Int>, tagId: Int) {
-        pos.subscribe{
-            println("onCarouselCardScroll ${it}, tagId=${tagId}")
-        }
-
+    fun onCarouselCardScroll(state: ItemCarousel.CarouselRVState, tagId: Int) {
+        println("onCarouselCardScroll ${state.visibleItemPos} (${state.visibleItemsCount}/${state.totalItemCount}), tagId=${tagId}")
     }
 
 }

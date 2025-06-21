@@ -1,7 +1,6 @@
 package ru.ansmos.dombuketa.converters
 
 import com.xwray.groupie.viewbinding.BindableItem
-import io.reactivex.rxjava3.core.Observable
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.models_bll.ProductListByTag
 import ru.ansmos.dombuketa.net_module.models_api.ProductListByTag_api
@@ -34,7 +33,7 @@ object ConverterProductListByTag {
     // Этот - список горизонтальных полос
     fun DTOList_ItemCarouselList(productList: List<ProductListByTag>?,
                                  mainClickListener: (str: String, pos: Int) -> Unit,
-                                 mainScrollListener: (pos: Observable<Int>, tagId: Int) -> Unit,
+                                 mainScrollListener: (state: ItemCarousel.CarouselRVState, tagId: Int) -> Unit,
                                  itemClickListener: (product: Product, pos: Int) -> Unit ): List<ItemCarousel>{
         val result = mutableListOf<ItemCarousel>()
         if (productList != null) {
@@ -52,7 +51,7 @@ object ConverterProductListByTag {
     // и слушатель для каждого итема внутри
     fun DTO_ItemCarousel(product: ProductListByTag,
                          mainClickListener: (str: String, pos: Int) -> Unit,
-                         mainScrollListener: (pos: Observable<Int>, tagId: Int) -> Unit,
+                         mainScrollListener: (state: ItemCarousel.CarouselRVState, tagId: Int) -> Unit,
                          itemClickListener: (product: Product, pos: Int) -> Unit ): ItemCarousel{
         return ItemCarousel(
             ItemCarousel.CarouselContent(
