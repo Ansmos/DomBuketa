@@ -15,17 +15,15 @@ import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.databinding.ItemCarousel2Binding
 
 /**
- * A horizontally scrolling RecyclerView, for use in a vertically scrolling RecyclerView.
+ * Горизонтальная прокрутка, которая используется в вертикальном RV.
  */
 class CarouselItem2(private val carouselDecoration: RecyclerView.ItemDecoration?,
                  private val adapter: GroupieAdapter,
                  private val onScroll: (state: CarouselRVState, tagId: Int) -> Unit,
                  private val tagId: Int)
     : BindableItem<ItemCarousel2Binding?>(), OnItemClickListener, Group {
-    //private val adapter: GroupieAdapter
 
     init {
-        //this.adapter = adapter
         adapter.setOnItemClickListener(this)
     }
 
@@ -41,11 +39,9 @@ class CarouselItem2(private val carouselDecoration: RecyclerView.ItemDecoration?
             }
             recyclerView.layoutManager = LinearLayoutManager(
                 recyclerView.context,
-                LinearLayoutManager.HORIZONTAL,
-                false
+                LinearLayoutManager.HORIZONTAL,false
             )
-
-
+            // Определяем скроллер
             Observable.create({ state ->
                 recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -55,7 +51,6 @@ class CarouselItem2(private val carouselDecoration: RecyclerView.ItemDecoration?
                             val totalItemsCount = recyclerView.layoutManager!!.itemCount
                             val pastVisibleItemCount = (recyclerView.layoutManager as LinearLayoutManager)
                                 .findFirstVisibleItemPosition()
-                            println(this@CarouselItem2)
                             state.onNext(
                                 CarouselRVState(this@CarouselItem2,
                                     pastVisibleItemCount,
@@ -68,15 +63,13 @@ class CarouselItem2(private val carouselDecoration: RecyclerView.ItemDecoration?
                     }
                 })
             })
-                .distinctUntilChanged()
+                .distinctUntilChanged()  //, оптимизируем вывод, чтоб не "шумел"
                 .subscribe({
-                    onScroll(it, tagId)  //TODO tag прокинуть
+                    onScroll(it, tagId)
                 },{
                     it.printStackTrace()
                 })
-
         }
-
         return viewHolder
     }
 
@@ -85,8 +78,8 @@ class CarouselItem2(private val carouselDecoration: RecyclerView.ItemDecoration?
     }
 
     override fun onItemClick(item: Item<*>, view: View) {
-//        adapter.remove(item);
-        adapter.add(item)
+        // Закладка на дальнейшую функциональность
+        adapter.remove(item);
     }
 
     override fun getLayout(): Int = R.layout.item_carousel_2
@@ -100,14 +93,13 @@ class CarouselItem2(private val carouselDecoration: RecyclerView.ItemDecoration?
 
     //Метод для добавления объектов в наш список
     fun addProducts(list: List<Group>){
-        //items.clear()
         adapter.addAll(list)
         adapter.notifyDataSetChanged()  //если без DiffUtils
     }
 
     //Решил передавать состояние RV в HomrFragment, пусть логика Paging будет там
     data class CarouselRVState(
-        val carouselItem: CarouselItem2,
+        val carouselItem: CarouselItem2, //Передаем ссылку на себя, чтобы отвязаться здесь от Интерактора, а вьюМодель не знает, где произошла прокрутка
         val visibleItemPos: Int,
         val visibleItemsCount: Int,
         val totalItemCount: Int

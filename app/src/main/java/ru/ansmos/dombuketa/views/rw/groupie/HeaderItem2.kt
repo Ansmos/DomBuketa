@@ -6,10 +6,11 @@ import com.xwray.groupie.viewbinding.BindableItem
 import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.databinding.ItemHeader2Binding
 
+// Заголовок для горизонтальной группы
 class HeaderItem2 @JvmOverloads constructor(
     val caption: CarouselCaption,
     private val onClick: (name: String, id: Int) -> Unit,
-    //private val onScroll: (state: ItemCarousel.CarouselRVState, tagId: Int) -> Unit,
+    //В заголовое группы вставим картинку с кликом впоследствии
     @field:DrawableRes @param:DrawableRes private val iconResId: Int = 0,
     private val onIconClickListener: View.OnClickListener? = null
 ) : BindableItem<ItemHeader2Binding>() {
@@ -31,6 +32,7 @@ class HeaderItem2 @JvmOverloads constructor(
     }
 
     override fun getLayout(): Int = R.layout.item_header_2
+
     override fun initializeViewBinding(view: View): ItemHeader2Binding {
         return ItemHeader2Binding.bind(view)
     }
@@ -41,11 +43,4 @@ class HeaderItem2 @JvmOverloads constructor(
         val title: String?,
         val description: String?
     )
-    //Решил передавать состояние RV в HomrFragment, пусть логика Paging будет там
-    data class CarouselRVState(
-        val visibleItemPos: Int,
-        val visibleItemsCount: Int,
-        val totalItemCount: Int
-    )
-
 }

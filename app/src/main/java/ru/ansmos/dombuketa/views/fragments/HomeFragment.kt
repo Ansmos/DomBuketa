@@ -30,12 +30,15 @@ import ru.ansmos.dombuketa.helpers.addTo
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.viewmodels.HomeViewModel
 import ru.ansmos.dombuketa.views.MainActivity
+import ru.ansmos.dombuketa.views.rw.groupie.CarouselItem2
 import ru.ansmos.dombuketa.views.rw.groupie.ItemCarousel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val autoDisposable = AutoDisposable()
     private lateinit var mainAdapterGroupie : GroupieAdapter
+    // Переменная для понимания, в какой горизонтальный RV класть следущую страницу
+    private var defaultCarouselItem2: CarouselItem2? = null
 
     private val viewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(HomeViewModel::class.java)
@@ -55,21 +58,20 @@ class HomeFragment : Fragment() {
         subscribeToProductListByTagListAll()
         subscribeToProductListByTag()
         subscribeToProgressBar()
-
+        // Для опытов TODO
         binding.root.findViewById<ImageButton>(R.id.test_button).setOnClickListener {
             Log.i("onClick","Click")
-            //val o1 = Observable.just(Product(1,"p1", null, ))
         }
 
     }
-
+    // Загрузка первой пачки данных для вложенных RV, согласно API
     private fun subscribeToProductListByTagListAll(){
         viewModel.productListByTagListAll
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
                 //Передаем в ItemCarousel обработчики нажатий
-                ConverterProductListByTag.DTOList_ItemCarouselList(
+                ConverterProductListByTag.DTOList__SectionList(
                     it, ::onCarouselCardClick, ::onCarouselCardScroll, ::onProductItemClick)
             }
             .subscribe({
@@ -86,10 +88,7 @@ class HomeFragment : Fragment() {
                 ConverterProductListByTag.addProductListToCarousel(it, ::onProductItemClick)
             }
             .subscribe({
-                //(mainAdapterGroupie.getGroupAtAdapterPosition(1) as ItemCarousel).items_field.addAll(it)
-                //mainAdapterGroupie.
-
-                mainAdapterGroupie.notifyDataSetChanged()
+                defaultCarouselItem2?.addProducts(it)
             },{
                 it.printStackTrace()
             })
@@ -147,7 +146,6 @@ class HomeFragment : Fragment() {
 
     private fun initRV() {
         val rv = binding.homeFragmentRoot.findViewById<RecyclerView>(R.id.main_recycler)
-
         rv.apply {
             mainAdapterGroupie = GroupieAdapter()
             adapter = mainAdapterGroupie
@@ -162,16 +160,21 @@ class HomeFragment : Fragment() {
     fun onProductItemClick(product: Product, pos: Int) {
         println("onProductItemClick: Id=${product.id} - ${product.name}, price=${product.price.price}")
     }
-    fun onCarouselCardScroll(state: ItemCarousel.CarouselRVState, tagId: Int) {
-        println("onCarouselCardScroll ${state.visibleItemPos} (${state.visibleItemsCount}/${state.totalItemCount}), tagId=${tagId}")
-        if ((state.visibleItemsCount + state.visibleItemPos) > (state.totalItemCount - PAGING_ITEMS_TO_END)){
-            //TODO Сделать проверку на страницы? увязку с количеством элементов, загружаемых api
-            viewModel.refreshProductListByTag(tagId, 2, 10)
-        }
 
+    fun onCarouselCardScroll(state: CarouselItem2.CarouselRVState, tagId: Int) {
+        println("Fragm.Scroll: visPos=${state.visibleItemPos} (visCount=${state.visibleItemsCount}/total=${state.totalItemCount}), tagId=${tagId}")
+        //Если до конца списка осталось 4 элемента и если кольчество элементов >= страницы, значит есть, что загружать
+        if (((state.visibleItemsCount + state.visibleItemPos) > (state.totalItemCount - SettingsFragment.PAGING_ITEMS_TO_END))
+            && state.totalItemCount > PAGE_SIZE - 1
+            && state.totalItemCount % PAGE_SIZE == 0 ){     //Чтобы в последнем запросе, который возвращает меньше страницы не пытаться еще
+            //Установим recyclerView, куда будет добавлять продукты подписчик
+            defaultCarouselItem2 = state.carouselItem
+            viewModel.refreshProductListByTag(tagId, SettingsFragment.PAGE_SIZE)
+        }
     }
 
    companion object{
-        val PAGING_ITEMS_TO_END = 5
-    }
+        val PAGING_ITEMS_TO_END = 5  //Сколько осталось Итемов до подгрузки следущей страницы
+        val PAGE_SIZE = 10
+   }
 }

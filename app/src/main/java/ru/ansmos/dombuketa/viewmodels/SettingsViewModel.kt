@@ -18,9 +18,6 @@ class SettingsViewModel : ViewModel() {
     val showProgressBar : BehaviorSubject<Boolean>
     val productListByTagListAll: Observable<List<ProductListByTag>>
     val productListByTag: BehaviorSubject<List<Product>>
-    //Для pagging по категориям нужно хранить, по какой категории какая страница загружена
-    var mapPagingByTag = mutableMapOf<Int, Int>()
-
 
     init{
         App.instance.dagger.inject(this)
@@ -28,10 +25,7 @@ class SettingsViewModel : ViewModel() {
         showProgressBar = interactor.isProgressBarVisible
         //Запрос на первый запуск
         productListByTagListAll = interactor.productListByTagListAll // interactor.getProductListByTagListAll_API()
-        //
         productListByTag = interactor.productListByTag
-        //productListByTag = interactor.getProductListByTag_API(29, 2, 10)
-
     }
 
     fun refreshTags() {
@@ -42,22 +36,9 @@ class SettingsViewModel : ViewModel() {
     fun refreshProductListByTagListAll() {
         interactor.getProductListByTagListAll_API()
     }
-
+    // Пестая процедура потому что пример с habr не позволяет менять уже загруженную пачку,
+    // хорош только для статического ьпримера или для написания статьи
     fun refreshProductListByTag(tagId: Int, pageSize: Int) {
-        interactor.getProductListByTag_API(tagId, getPageNumberByTag(tagId), pageSize)
-        Log.i("intr.refreshProductListByTag", "tagId=${tagId}, page=${mapPagingByTag.get(tagId)}")
     }
 
-    fun getPageNumberByTag(tagId : Int) : Int {
-        var pageNumberDefault = mapPagingByTag.get(tagId) ?: 0
-
-        if (pageNumberDefault == 0){
-            // Первая страница уже загружена, выдаем вторую
-            pageNumberDefault = 2
-            mapPagingByTag?.putIfAbsent(tagId, pageNumberDefault)
-        } else {
-            mapPagingByTag.replace(tagId, ++pageNumberDefault)
-        }
-        return  pageNumberDefault
-    }
 }

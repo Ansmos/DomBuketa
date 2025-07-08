@@ -24,17 +24,13 @@ import ru.ansmos.dombuketa.viewmodels.SettingsViewModel
 import ru.ansmos.dombuketa.views.rw.groupie.*
 
 class SettingsFragment : Fragment() {
-
     private lateinit var binding: FragmentSettingsBinding
     private val autoDisposable = AutoDisposable()
     lateinit var mainAdapterGroupie : GroupieAdapter
-    //private val mainAdapterGroupie = GroupieAdapter()
-    private var defaultCarouselItem2: CarouselItem2? = null
 
     private val viewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(SettingsViewModel::class.java)
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
@@ -46,15 +42,10 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //viewModel.refreshProductListByTagListAll()
         subscribeToProductListByTagListAll()
-
-        // Horizontal carousel
-        val carouselSection = Section(HeaderItem2(HeaderItem2.CarouselCaption(0,"Заголовок", "Краткое примечание"), ::onCarouselCardClick))
- //TODO       carouselSection.setHideWhenEmpty(true)
         subscribeToProductListByTag()
-        //subscribeToProductListByTag((mainAdapterGroupie.getGroupAtAdapterPosition(1)) as Section)
-
         initRV()
     }
+
 
     private fun subscribeToProductListByTagListAll(){
         viewModel.productListByTagListAll
@@ -62,7 +53,7 @@ class SettingsFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .map {
                 //Передаем в ItemCarousel обработчики нажатий
-                ConverterProductListByTag.DTOList__SectionList(
+                ConverterProductListByTag.DTOList_ItemCarouselList(
                     it, ::onCarouselCardClick, ::onCarouselCardScroll, ::onProductItemClick)
             }
             .subscribe({
@@ -71,23 +62,9 @@ class SettingsFragment : Fragment() {
             .addTo(autoDisposable)
     }
 
-
+    // Пустая процедура потому что пример с habr не позволяет менять уже загруженную пачку,
+    // хорош только для статического ьпримера или для написания статьи
     private fun subscribeToProductListByTag() {
-        viewModel.productListByTag
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                ConverterProductListByTag.addProductListToCarousel(it, ::onProductItemClick)
-            }
-            .subscribe({
-                defaultCarouselItem2
-            //                ((mainAdapterGroupie.getGroupAtAdapterPosition(1) as Section)
-            //                    .groups[0].getItem(0) as CarouselItem2)
-                    ?.addProducts(it)
-            },{
-                it.printStackTrace()
-            })
-            .addTo(autoDisposable)
     }
 
     private fun initRV() {
@@ -103,17 +80,16 @@ class SettingsFragment : Fragment() {
     fun onCarouselCardClick(name: String, id: Int) {
         println("onCarouselCardClick " + name + " posM=" + id)
     }
+    //Click по товару
     fun onProductItemClick(product: Product, pos: Int) {
         println("onProductItemClick: Id=${product.id} - ${product.name}, price=${product.price.price}")
     }
-    fun onCarouselCardScroll(state: CarouselItem2.CarouselRVState, tagId: Int) {
-        println("Fragm.Scroll: visPos=${state.visibleItemPos} (visCount=${state.visibleItemsCount}/total=${state.totalItemCount}), tagId=${tagId}")
-        //Если до конца списка осталось 4 элемента и если кольчество элементов >= страницы, значит есть, что загружать
-        if (((state.visibleItemsCount + state.visibleItemPos) > (state.totalItemCount - PAGING_ITEMS_TO_END))
-                && state.totalItemCount > PAGE_SIZE - 1 ){
-            //Установим recyclerView, куда будет добавлять продукты подписчик
-            defaultCarouselItem2 = state.carouselItem
-            viewModel.refreshProductListByTag(tagId,  PAGE_SIZE)
+    //Прокрутка
+    fun onCarouselCardScroll(state: ItemCarousel.CarouselRVState, tagId: Int) {
+        println("onCarouselCardScroll ${state.visibleItemPos} (${state.visibleItemsCount}/${state.totalItemCount}), tagId=${tagId}")
+        if ((state.visibleItemsCount + state.visibleItemPos) > (state.totalItemCount - HomeFragment.PAGING_ITEMS_TO_END)){
+            //TODO Сделать проверку на страницы? увязку с количеством элементов, загружаемых api
+            viewModel.refreshProductListByTag(tagId, 10)
         }
     }
 

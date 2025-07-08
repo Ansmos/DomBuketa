@@ -48,16 +48,6 @@ class Interactor(private val retrofitService: IDomBuketaApi2) {
             .doOnError { isProgressBarVisible.onNext(false) }
     }
 
-//    fun getProductListByTag_API(tag: Int, pageIndex: Int, pageSize: Int) : Observable<List<Product>> {
-//        isProgressBarVisible.onNext(true)
-//        return retrofitService.getItemsByTag(tag, pageIndex, pageSize, ApiKey.KEY)
-//            .subscribeOn(Schedulers.io())
-//            .map {
-//                isProgressBarVisible.onNext(false)
-//                ConverterProduct.apiList_DTOList(it.productList)
-//            }
-//            .doOnError { isProgressBarVisible.onNext(false) }
-//    }
     fun getProductListByTag_API(tag: Int, pageIndex: Int, pageSize: Int) {
         isProgressBarVisible.onNext(true)
         retrofitService.getItemsByTag(tag, pageIndex, pageSize, ApiKey.KEY)

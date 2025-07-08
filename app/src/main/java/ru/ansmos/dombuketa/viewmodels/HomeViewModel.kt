@@ -18,6 +18,8 @@ class HomeViewModel : ViewModel() {
     val showProgressBar : BehaviorSubject<Boolean>
     var productListByTagListAll: Observable<List<ProductListByTag>>
     val productListByTag: BehaviorSubject<List<Product>>
+    //Для pagging по категориям нужно хранить, по какой категории какая страница загружена
+    var mapPagingByTag = mutableMapOf<Int, Int>()
 
     init{
         App.instance.dagger.inject(this)
@@ -26,23 +28,36 @@ class HomeViewModel : ViewModel() {
         //Запрос на первый запуск
         productListByTagListAll = interactor.productListByTagListAll
         interactor.getProductListByTagListAll_API()
-        //TODO
-        //productListByTag = interactor.getProductListByTag_API(29, 2, 10)
         productListByTag = interactor.productListByTag
     }
 
+    // Оставлю на будущее работу с тегами
     fun refreshTags() {
         Observable.fromArray(interactor.getTagList_API()).flatMap {
             tagList
         }
     }
+    // Загрузка первой пачки данных для вложенных RV, согласно API
     fun refreshProductListByTagListAll() {
         interactor.getProductListByTagListAll_API()
     }
+    // Загрузка для постраничного вывода RV по конкретному тегу
+    fun refreshProductListByTag(tagId: Int, pageSize: Int) {
+        interactor.getProductListByTag_API(tagId, getPageNumberByTag(tagId), pageSize)
+        Log.i("intr.refreshProductListByTag", "tagId=${tagId}, page=${mapPagingByTag.get(tagId)}")
+    }
 
-    fun refreshProductListByTag(tagId: Int, pageIndex:Int, pageSize: Int) {
-        interactor.getProductListByTag_API(tagId, pageIndex, pageSize)
-        Log.i("interactor", "refreshProductListByTag")
+    // Процедура ведет карту подгруженных страниц по категориям
+    fun getPageNumberByTag(tagId : Int) : Int {
+        var pageNumberDefault = mapPagingByTag.get(tagId) ?: 0
+        if (pageNumberDefault == 0){
+            // Первая страница уже загружена, выдаем вторую
+            pageNumberDefault = 2
+            mapPagingByTag?.putIfAbsent(tagId, pageNumberDefault)
+        } else {
+            mapPagingByTag.replace(tagId, ++pageNumberDefault)
+        }
+        return  pageNumberDefault
     }
 
 }
