@@ -2,11 +2,13 @@ package ru.ansmos.dombuketa.views.fragments
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ import androidx.transition.*
 import androidx.transition.Fade.IN
 import androidx.transition.Fade.OUT
 import com.xwray.groupie.GroupieAdapter
+import com.xwray.groupie.Section
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -50,7 +53,47 @@ class HomeFragment : Fragment() {
         initRV()
         initPullToRefresh()
         subscribeToProductListByTagListAll()
+        subscribeToProductListByTag()
         subscribeToProgressBar()
+
+        binding.root.findViewById<ImageButton>(R.id.test_button).setOnClickListener {
+            Log.i("onClick","Click")
+            //val o1 = Observable.just(Product(1,"p1", null, ))
+        }
+
+    }
+
+    private fun subscribeToProductListByTagListAll(){
+        viewModel.productListByTagListAll
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                //Передаем в ItemCarousel обработчики нажатий
+                ConverterProductListByTag.DTOList_ItemCarouselList(
+                    it, ::onCarouselCardClick, ::onCarouselCardScroll, ::onProductItemClick)
+            }
+            .subscribe({
+                mainAdapterGroupie.addAll(it)
+            })
+            .addTo(autoDisposable)
+    }
+
+    private fun subscribeToProductListByTag() {
+        viewModel.productListByTag
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                ConverterProductListByTag.addProductListToCarousel(it, ::onProductItemClick)
+            }
+            .subscribe({
+                //(mainAdapterGroupie.getGroupAtAdapterPosition(1) as ItemCarousel).items_field.addAll(it)
+                //mainAdapterGroupie.
+
+                mainAdapterGroupie.notifyDataSetChanged()
+            },{
+                it.printStackTrace()
+            })
+            .addTo(autoDisposable)
     }
 
     private fun subscribeToProgressBar() {
@@ -64,22 +107,6 @@ class HomeFragment : Fragment() {
             })
             .addTo(autoDisposable)
     }
-
-    private fun subscribeToProductListByTagListAll(){
-        viewModel.productListByTagListAll
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                //Передаем в ItemCarousel обработчики нажатий
-                ConverterProductListByTag.DTOList_ItemCarouselList(
-                    it.productListByTag, ::onCarouselCardClick, ::onCarouselCardScroll, ::onProductItemClick)
-            }
-            .subscribe({
-                mainAdapterGroupie.addAll(it)
-            })
-            .addTo(autoDisposable)
-    }
-
 
     private fun initPullToRefresh() {
         val pull = binding.homeFragmentRoot.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh)
@@ -137,6 +164,14 @@ class HomeFragment : Fragment() {
     }
     fun onCarouselCardScroll(state: ItemCarousel.CarouselRVState, tagId: Int) {
         println("onCarouselCardScroll ${state.visibleItemPos} (${state.visibleItemsCount}/${state.totalItemCount}), tagId=${tagId}")
+        if ((state.visibleItemsCount + state.visibleItemPos) > (state.totalItemCount - PAGING_ITEMS_TO_END)){
+            //TODO Сделать проверку на страницы? увязку с количеством элементов, загружаемых api
+            viewModel.refreshProductListByTag(tagId, 2, 10)
+        }
+
     }
 
+   companion object{
+        val PAGING_ITEMS_TO_END = 5
+    }
 }

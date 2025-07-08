@@ -3,6 +3,7 @@ package ru.ansmos.dombuketa.views.rw.groupie
 import android.view.View
 import androidx.core.content.contentValuesOf
 import com.bumptech.glide.Glide
+import com.xwray.groupie.Group
 import com.xwray.groupie.viewbinding.BindableItem
 import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.databinding.ItemCarouselProductBinding
@@ -10,7 +11,8 @@ import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.net_module.ApiConstants
 
 class ProductItem(private val product: Product,
-                  private val onClick: (product: Product, pos: Int) -> Unit): BindableItem<ItemCarouselProductBinding>() {
+                  private val onClick: (product: Product, pos: Int) -> Unit)
+    : BindableItem<ItemCarouselProductBinding>(), Group {
 
     override fun bind(binding: ItemCarouselProductBinding, position: Int) {
         binding.tovar = product

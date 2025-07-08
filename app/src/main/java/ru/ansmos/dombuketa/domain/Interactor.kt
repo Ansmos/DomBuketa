@@ -4,33 +4,40 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import ru.ansmos.dombuketa.converters.ConverterProduct
+import ru.ansmos.dombuketa.converters.ConverterProductListByTag
 import ru.ansmos.dombuketa.converters.ConverterTag
-import ru.ansmos.dombuketa.converters.ConverterProductListByTagAll
 import ru.ansmos.dombuketa.models_bll.Product
-import ru.ansmos.dombuketa.models_bll.ProductListByTagAll
+import ru.ansmos.dombuketa.models_bll.ProductListByTag
 import ru.ansmos.dombuketa.models_bll.Tag
 import ru.ansmos.dombuketa.net_module.ApiKey
 import ru.ansmos.dombuketa.net_module.api.IDomBuketaApi2
 
 class Interactor(private val retrofitService: IDomBuketaApi2) {
     val isProgressBarVisible: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    val productListByTagListAll: BehaviorSubject<List<ProductListByTag>> = BehaviorSubject.create()
+    val productListByTag: BehaviorSubject<List<Product>> = BehaviorSubject.create()
 
     init {
         isProgressBarVisible.onNext(false)
     }
 
-    fun getProductListByTagListAllFromAPI() : Observable<ProductListByTagAll> {
+    fun getProductListByTagListAll_API() {
         isProgressBarVisible.onNext(true)
-        return retrofitService.getProductListByTags(ApiKey.KEY)
+        retrofitService.getProductListByTags(ApiKey.KEY)
             .subscribeOn(Schedulers.io())
             .map {
                 isProgressBarVisible.onNext(false)
-                ConverterProductListByTagAll.api_DTO(it)
+                ConverterProductListByTag.apiList_DTOList(it.ProductListByTag)
             }
-            .doOnError { isProgressBarVisible.onNext(false) }
+            .subscribe({
+                productListByTagListAll.onNext(it)
+                isProgressBarVisible.onNext(false)
+            },{
+                isProgressBarVisible.onNext(false)
+            })
     }
 
-    fun getTagListFromAPI() : Observable<List<Tag>> {
+    fun getTagList_API() : Observable<List<Tag>> {
         isProgressBarVisible.onNext(true)
         return retrofitService.getTags(ApiKey.KEY)
             .subscribeOn(Schedulers.io())
@@ -41,14 +48,31 @@ class Interactor(private val retrofitService: IDomBuketaApi2) {
             .doOnError { isProgressBarVisible.onNext(false) }
     }
 
-    fun getProductListFromAPI(tag: Int, pageIndex: Int, pageSize: Int) : Observable<List<Product>> {
+//    fun getProductListByTag_API(tag: Int, pageIndex: Int, pageSize: Int) : Observable<List<Product>> {
+//        isProgressBarVisible.onNext(true)
+//        return retrofitService.getItemsByTag(tag, pageIndex, pageSize, ApiKey.KEY)
+//            .subscribeOn(Schedulers.io())
+//            .map {
+//                isProgressBarVisible.onNext(false)
+//                ConverterProduct.apiList_DTOList(it.productList)
+//            }
+//            .doOnError { isProgressBarVisible.onNext(false) }
+//    }
+    fun getProductListByTag_API(tag: Int, pageIndex: Int, pageSize: Int) {
         isProgressBarVisible.onNext(true)
-        return retrofitService.getItems(tag, pageIndex, pageSize, ApiKey.KEY)
+        retrofitService.getItemsByTag(tag, pageIndex, pageSize, ApiKey.KEY)
             .subscribeOn(Schedulers.io())
             .map {
                 isProgressBarVisible.onNext(false)
                 ConverterProduct.apiList_DTOList(it.productList)
             }
-            .doOnError { isProgressBarVisible.onNext(false) }
+            .subscribe({
+                productListByTag.onNext(it)
+                isProgressBarVisible.onNext(false)
+            }, {
+                isProgressBarVisible.onNext(false)
+            })
+
     }
+
 }

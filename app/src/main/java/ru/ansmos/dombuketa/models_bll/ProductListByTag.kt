@@ -13,8 +13,8 @@ data class ProductListByTag(
     val productList: List<Product>?
 ) : Parcelable
 
-@Parcelize
-data class ProductListByTagAll(
-    val page: Int,
-    val productListByTag: List<ProductListByTag>?
-) : Parcelable
+//@Parcelize
+//data class ProductListByTagAll(
+//    val page: Int,
+//    val productListByTag: List<ProductListByTag>?
+//) : Parcelable

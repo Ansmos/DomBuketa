@@ -43,7 +43,7 @@ class DeliveresFragment : Fragment() {
             .findViewById(R.id.delivers_fragment_root),R.layout.catalog_merge, requireContext()))
         initRV()
         initPullToRefresh()
-        viewModel.productList
+        viewModel.productListByTag
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
