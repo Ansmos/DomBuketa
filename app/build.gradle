@@ -51,18 +51,29 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    //Glade
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
+
     def lifecycle_version = "2.4.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 //    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
 
-    //dagger
+    //Dagger
     implementation dagger
     kapt daggerCompiler
     //RxJava
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation 'io.reactivex.rxjava3:rxkotlin:3.0.1'
+
+    //Groupie
+    def groupie_version = "2.10.1"
+    implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+    ////implementation "com.xwray:groupie-kotlin-android-extensions:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-viewbinding:$groupie_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
