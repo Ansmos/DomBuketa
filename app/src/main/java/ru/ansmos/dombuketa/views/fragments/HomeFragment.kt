@@ -159,6 +159,8 @@ class HomeFragment : Fragment() {
     }
     fun onProductItemClick(product: Product, pos: Int) {
         println("onProductItemClick: Id=${product.id} - ${product.name}, price=${product.price.price}")
+        viewModel.updateVisitedProduct(product)
+        (requireActivity() as MainActivity).launchDetailsFrag(product)
     }
 
     fun onCarouselCardScroll(state: CarouselItem2.CarouselRVState, tagId: Int) {

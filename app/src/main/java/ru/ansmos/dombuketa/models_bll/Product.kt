@@ -10,5 +10,6 @@ data class Product (
     val price : Price,
     val imageCart: Image,
     val imageGalary: List<Image>,
-    val description: String
+    val description: String,
+    var isInFavorites: Boolean = false,
 ) : Parcelable

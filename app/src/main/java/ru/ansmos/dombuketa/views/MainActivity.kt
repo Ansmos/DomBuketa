@@ -7,11 +7,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.databinding.ActivityMainBinding
+import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.views.fragments.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     var firstStart: Boolean = true
+    var defaultFragmentTag: String = ""
+    var previoustFragmentTag: String = ""  //Для фракмента с деталями, неизвестно, из какого фрагмента он вызван
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +75,24 @@ class MainActivity : AppCompatActivity() {
     private fun changeFrag(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().replace(R.id.fragment_placeholder, fragment, tag)
             .addToBackStack(null).commit()
+        defaultFragmentTag = tag
+    }
+
+    fun launchDetailsFrag(product: Product) {
+        //Создаем "посылку"
+        val bundle = Bundle()
+        bundle.putParcelable("product", product)
+        val fragment = DetailsProductFragment()
+        //Прикрепляем нашу "посылку" к фрагменту
+        fragment.arguments = bundle
+        //Запускаем фрагмент
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_placeholder, fragment)
+            .addToBackStack(null).commit()
+        previoustFragmentTag = defaultFragmentTag
+        defaultFragmentTag = "details_product"
+
     }
 
 }

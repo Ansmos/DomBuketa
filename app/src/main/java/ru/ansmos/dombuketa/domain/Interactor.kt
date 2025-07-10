@@ -1,18 +1,21 @@
 package ru.ansmos.dombuketa.domain
 
+import android.util.Log
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import ru.ansmos.dombuketa.converters.ConverterProduct
 import ru.ansmos.dombuketa.converters.ConverterProductListByTag
 import ru.ansmos.dombuketa.converters.ConverterTag
+import ru.ansmos.dombuketa.db_module.repo.MainRepository
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.models_bll.ProductListByTag
 import ru.ansmos.dombuketa.models_bll.Tag
 import ru.ansmos.dombuketa.net_module.ApiKey
 import ru.ansmos.dombuketa.net_module.api.IDomBuketaApi2
 
-class Interactor(private val retrofitService: IDomBuketaApi2) {
+class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: MainRepository) {
     val isProgressBarVisible: BehaviorSubject<Boolean> = BehaviorSubject.create()
     val productListByTagListAll: BehaviorSubject<List<ProductListByTag>> = BehaviorSubject.create()
     val productListByTag: BehaviorSubject<List<Product>> = BehaviorSubject.create()
@@ -64,5 +67,20 @@ class Interactor(private val retrofitService: IDomBuketaApi2) {
             })
 
     }
+
+    fun updataVisitedProduct(product: Product) {
+        Single.just(product)
+            .observeOn(Schedulers.io())
+            .map {
+                ConverterProduct.to_ProductLiteEntity(product)
+            }
+            .subscribe( {
+                repo.updataProductLite(it)
+                Log.i("intr.updataVisitedProduct","Просмотренный продукт добавлен/обновлен в БД")
+            },{
+                Log.e("intr.updataVisitedProduct","Ошибка. Просмотренный продукт не добавлен/обновлен в БД" + it.message)
+            })
+    }
+    fun isProductInFavorites(productId: Int) : Single<Boolean> = repo.isProductInFavorites(productId)
 
 }

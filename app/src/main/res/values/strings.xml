@@ -5,4 +5,7 @@
     <string name="menu_shopping_cart_title_text">Корзина</string>
     <string name="menu_delivery_text">Доставка</string>
     <string name="menu_settings_title_text">Настройки</string>
+
+    <string name="fragment_details.btn_menu_fav">Избранное</string>
+    <string name="fragment_details.btn_menu_share">Поделиться</string>
 </resources>

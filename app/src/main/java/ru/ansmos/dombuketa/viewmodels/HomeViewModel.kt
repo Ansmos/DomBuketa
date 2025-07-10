@@ -59,5 +59,8 @@ class HomeViewModel : ViewModel() {
         }
         return  pageNumberDefault
     }
+    fun updateVisitedProduct(product: Product){
+        interactor.updataVisitedProduct(product)
+    }
 
 }

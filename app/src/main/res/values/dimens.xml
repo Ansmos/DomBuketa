@@ -17,4 +17,10 @@
     <dimen name="padding_small">8dp</dimen>
     <dimen name="padding_standard">16dp</dimen>
 
+    <!-- details product-->
+    <dimen name="fragment_details.layout_margin.fab1">16dp</dimen>
+    <dimen name="fragment_details.layout_margin.textview">8dp</dimen>
+    <dimen name="fragment_details.h.appbar.layout">200dp</dimen>
+    <dimen name="fragment_details.h.appbar.collapsing_toolbar_layout">60dp</dimen>
+
 </resources>

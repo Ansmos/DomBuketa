@@ -8,10 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xwray.groupie.Group
 import com.xwray.groupie.GroupieAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.viewbinding.BindableItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.ansmos.dombuketa.R
@@ -21,6 +18,7 @@ import ru.ansmos.dombuketa.helpers.AutoDisposable
 import ru.ansmos.dombuketa.helpers.addTo
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.viewmodels.SettingsViewModel
+import ru.ansmos.dombuketa.views.MainActivity
 import ru.ansmos.dombuketa.views.rw.groupie.*
 
 class SettingsFragment : Fragment() {
@@ -83,6 +81,7 @@ class SettingsFragment : Fragment() {
     //Click по товару
     fun onProductItemClick(product: Product, pos: Int) {
         println("onProductItemClick: Id=${product.id} - ${product.name}, price=${product.price.price}")
+        (requireActivity() as MainActivity).launchDetailsFrag(product)
     }
     //Прокрутка
     fun onCarouselCardScroll(state: ItemCarousel.CarouselRVState, tagId: Int) {
