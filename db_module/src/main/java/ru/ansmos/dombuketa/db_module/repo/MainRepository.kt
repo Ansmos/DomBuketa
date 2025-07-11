@@ -13,6 +13,10 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
         productLiteDao.updateVisitedProducts(productLiteEntity)
     }
 
+    fun getVisitedProducts(pageIndex: Int, pageSize: Int): Observable<List<ProductLiteEntity>> {
+        return productLiteDao.getVisitedProductsByPage(pageIndex, pageSize)
+    }
+
     //Запрос в Избранных ли продукт
     fun isProductInFavorites(productId: Int) : Single<Boolean> = productLiteDao.isProductInFavorite(productId)
 
@@ -24,9 +28,6 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
         }
     }
 
-    fun getFilms(pageIndex: Int, pageSize: Int): Observable<List<ProductLiteEntity>> {
-        return productLiteDao.getVisitedProductsByPage(pageIndex, pageSize)
-    }
 
 //    fun getFilmsPaging(): androidx.paging.DataSource.Factory<Int, ProductLiteEntity> {
 //        return productLiteDao.getFilms_Paging()

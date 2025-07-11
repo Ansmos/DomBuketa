@@ -57,7 +57,7 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
             .subscribeOn(Schedulers.io())
             .map {
                 isProgressBarVisible.onNext(false)
-                ConverterProduct.apiList_DTOList(it.productList)
+                ConverterProduct.api_DTO_List(it.productList)
             }
             .subscribe({
                 productListByTag.onNext(it)
@@ -65,14 +65,13 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
             }, {
                 isProgressBarVisible.onNext(false)
             })
-
     }
 
     fun updataVisitedProduct(product: Product) {
         Single.just(product)
             .observeOn(Schedulers.io())
             .map {
-                ConverterProduct.to_ProductLiteEntity(product)
+                ConverterProduct.dto_ProductLiteEntity(product)
             }
             .subscribe( {
                 repo.updataProductLite(it)
@@ -81,6 +80,20 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
                 Log.e("intr.updataVisitedProduct","Ошибка. Просмотренный продукт не добавлен/обновлен в БД" + it.message)
             })
     }
+    // Из БД
     fun isProductInFavorites(productId: Int) : Single<Boolean> = repo.isProductInFavorites(productId)
+    // Из БД
+    fun getVisitedProductList(pageIndex: Int, pageSize: Int) {
+        repo.getVisitedProducts(pageIndex, pageSize)
+            .subscribeOn(Schedulers.io())
+            .map {
+                ConverterProduct.ProductLiteEntity_DTO_List(it)
+            }
+            .subscribe({
+                productListByTag.onNext(it)
+            }, {
+                it.printStackTrace()
+            })
+    }
 
 }

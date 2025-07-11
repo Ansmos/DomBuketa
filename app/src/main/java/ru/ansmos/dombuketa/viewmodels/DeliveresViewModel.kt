@@ -23,6 +23,5 @@ class DeliveresViewModel : ViewModel() {
         Observable.fromArray(interactor.getProductListByTag_API(0,1, AppConstants.PRODUCT_PAGE_SIZE)).flatMap {
             productListByTag
         }
-
     }
 }

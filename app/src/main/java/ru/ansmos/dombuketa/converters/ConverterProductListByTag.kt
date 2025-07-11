@@ -27,7 +27,7 @@ object ConverterProductListByTag {
             tagId = item.tagId,
             nameTag = item.nameTag,
             descriptionTag = item.descriptionTag,
-            productList = ConverterProduct.apiList_DTOList(item.productList as List<Product_api>?)
+            productList = ConverterProduct.api_DTO_List(item.productList as List<Product_api>?)
         )
     }
 

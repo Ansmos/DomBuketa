@@ -1,5 +1,6 @@
 package ru.ansmos.dombuketa.views.rw
 
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.ansmos.dombuketa.databinding.ItemSimpleHBinding
@@ -14,6 +15,10 @@ class Product_H_ViewHolder(val binding: ItemSimpleHBinding) : RecyclerView.ViewH
                 .load(IMAGES_URL + item.imageCart.path + item.imageCart.fileName)
                 .centerCrop()
                 .into(binding.poster)
+            if (item.isInFavorites) {
+                binding.fav.visibility = View.VISIBLE
+            }
         }
+
     }
 }
