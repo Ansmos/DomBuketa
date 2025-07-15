@@ -1,6 +1,8 @@
 package ru.ansmos.dombuketa.net_module.api
 
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -30,4 +32,13 @@ interface IDomBuketaApi2 {
     fun getProductListByTags(
         @Query("key") apiKey: String
     ): Observable<ProductListByTagAll_api>
+
+    //http://localhost:52682/api/2/catalog/item/350?key=3f86da7ac18eaf9e2906eb579c6be891
+    // Первоначальная загрузка
+    @GET("2/catalog/item/{id}")
+    fun getProductById(
+        @Path("id") tag: Int,
+        @Query("key") apiKey: String
+    ): Maybe<Product_api>
+
 }

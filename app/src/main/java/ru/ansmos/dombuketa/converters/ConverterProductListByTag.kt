@@ -66,11 +66,7 @@ object ConverterProductListByTag {
                 mainClickListener//, mainScrollListener
             )
         )
-        val carouselAdapter = object : GroupieAdapter(){
-            var bebe: Int = index
-                get() {return  field}
-                set(value) { field = value }
-        }
+        val carouselAdapter = GroupieAdapter()
         // Заполним группу Продуктами
         val aa = addProductListToCarousel(product.productList, itemClickListener)
         carouselAdapter.addAll(aa)

@@ -8,4 +8,8 @@
 
     <string name="fragment_details.btn_menu_fav">Избранное</string>
     <string name="fragment_details.btn_menu_share">Поделиться</string>
+    <string name="fragment_details.no_product">Товар временно отсутствует</string>
+
+    <string name="fragment_favorite.title_Visited">Просмотренные подарки</string>
+
 </resources>

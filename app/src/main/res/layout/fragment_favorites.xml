@@ -10,31 +10,49 @@
     tools:visibility="visible"
     tools:context=".views.fragments.FavoritesFragment">
 
+    <TextView
+        android:id="@+id/title_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_details.btn_menu_fav"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="?android:attr/textColorSecondary"
+        >
+    </TextView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favorites_recycler"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="500dp"
+        app:layout_constraintTop_toBottomOf="@id/title_fav"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
     </androidx.recyclerview.widget.RecyclerView>
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/favorites_recycler"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Button"/>
 
     <TextView
-        android:id="@+id/text_test"
+        android:id="@+id/title_visited"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favoites"
-        app:layout_constraintTop_toBottomOf="@id/favorites_recycler"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/visited_recycler"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/fragment_favorite.title_Visited"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="?android:attr/textColorSecondary"
+        >
     </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/visited_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/item_carousel_margins"
+        android:paddingRight="@dimen/item_carousel_margins"
+        tools:viewBindingIgnore="true">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

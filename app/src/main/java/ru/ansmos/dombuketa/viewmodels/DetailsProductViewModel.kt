@@ -3,6 +3,7 @@ package ru.ansmos.dombuketa.viewmodels
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -22,15 +23,18 @@ class DetailsProductViewModel : ViewModel() {
     lateinit var interactor: Interactor
     val isNetworkError = SingleLiveEvent<String>()
 
+
     init {
         App.instance.dagger.inject(this)
-
     }
 
     fun updateVisitedProduct(product: Product){
         interactor.updataVisitedProduct(product)
     }
+
     fun isProductInFavorites(productId: Int) : Single<Boolean> = interactor.isProductInFavorites(productId)
+
+    fun getProductById(productId: Int): Maybe<Product> = interactor.getProductById_API(productId)
 
     suspend fun loadWallpaper(url: String) : Bitmap?{
         return suspendCoroutine{

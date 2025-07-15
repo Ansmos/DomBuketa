@@ -15,6 +15,7 @@
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/item_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/item_simple_h_card_margin"
@@ -22,7 +23,6 @@
             app:cardCornerRadius="@dimen/item_simple_h_card_corverradius">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/item_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -70,6 +70,21 @@
                     app:layout_constraintTop_toBottomOf="@id/title"
                     android:text="@{tovar.description}"
                     tools:text="@tools:sample/lorem/random"></TextView>
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/item_simple_price_margun_top"
+                    android:layout_marginLeft="@dimen/item_simple_price_margun_left"
+                    android:textAlignment="center"
+                    android:padding="@dimen/item_simple_h_text_padding"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textSize="@dimen/item_simple_title_text_size"
+                    app:layout_constraintLeft_toRightOf="@id/poster"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1000p" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

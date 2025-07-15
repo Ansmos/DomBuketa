@@ -3,6 +3,7 @@ package ru.ansmos.dombuketa.views.fragments
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.databinding.FragmentProductDetailsBinding
 import ru.ansmos.dombuketa.helpers.AutoDisposable
 import ru.ansmos.dombuketa.helpers.addTo
+import ru.ansmos.dombuketa.models_bll.Price
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.net_module.ApiConstants
 import ru.ansmos.dombuketa.viewmodels.DetailsProductViewModel
@@ -35,7 +37,6 @@ class DetailsProductFragment : Fragment() {
         ViewModelProvider.NewInstanceFactory().create(DetailsProductViewModel::class.java)
     }
     lateinit var product: Product
-    private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
         enterTransition = Slide(Gravity.END).apply { duration = 500 }
@@ -50,23 +51,39 @@ class DetailsProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         product = arguments?.get("product") as Product
+
+        viewModel.getProductById(product.id)
+            .observeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                    Log.i("frag.details.onCreated","Просмотренный продукт найден")
+                    product = it
+                },{
+                    Log.e("frag.details.onCreated","Ошибка. Просмотренный продукт не найден " + it.message)
+                    it.printStackTrace()
+                })
+            .addTo(autoDisposable)
+
         viewModel.isProductInFavorites(product.id)
             .observeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 product.isInFavorites = it
-            },{
+            }, {
                 it.printStackTrace()
             })
             .addTo(autoDisposable)
 
         initFabs()
         binding.detailsToolbar.title = product.name
-        Glide.with(this)
-            .load(ApiConstants.IMAGES_URL + product.imageCart.path + product.imageCart.fileName)
-            .centerCrop()
-            .into(binding.detailsPoster)
+        if (product.imageCart != null) {
+            Glide.with(this)
+                .load(ApiConstants.IMAGES_URL + product.imageCart!!.path + product.imageCart!!.fileName)
+                .centerCrop()
+                .into(binding.detailsPoster)
+        }
         binding.detailsDescription.text = product.description
+        binding.price.text = product.price.priceTotal.toString()
     }
 
 
@@ -125,4 +142,4 @@ class DetailsProductFragment : Fragment() {
     }
 }
 
-private fun String.handleSingleQuote(): String = this.replace("'", "")
+

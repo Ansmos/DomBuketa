@@ -1,11 +1,14 @@
 package ru.ansmos.dombuketa.converters
 
+import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.db_module.entity.ProductLiteEntity
 import ru.ansmos.dombuketa.models_bll.Image
 import ru.ansmos.dombuketa.models_bll.Price
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.net_module.models_api.Product_api
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 object ConverterProduct {
@@ -36,9 +39,9 @@ object ConverterProduct {
             //id_remote = product.id,
             name = product.name,
             price = product.price.priceTotal,
-            image = product.imageCart.path + product.imageCart.fileName,
+            image = (product.imageCart?.path ?: "") + (product.imageCart?.fileName ?: ""),
             description = product.description,
-            view_date = SimpleDateFormat("dd.mm.yyyy").format(Date()),
+            view_date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
             isInFavorites = product.isInFavorites
         )
     }
@@ -76,4 +79,8 @@ object ConverterProduct {
             isInFavorites = item.isInFavorites
         )
     }
+
+    fun empty() = Product(0, R.string.fragment_details_no_product.toString(),
+        Price(0,0.0,0.0,0.0,0.0,false),
+        null, null, R.string.fragment_details_no_product.toString(), false)
 }

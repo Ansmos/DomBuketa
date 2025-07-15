@@ -1,5 +1,7 @@
 package ru.ansmos.dombuketa.db_module.repo
 
+import androidx.room.Query
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import ru.ansmos.dombuketa.db_module.dao.IProductLiteDao
@@ -13,12 +15,18 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
         productLiteDao.updateVisitedProducts(productLiteEntity)
     }
 
-    fun getVisitedProducts(pageIndex: Int, pageSize: Int): Observable<List<ProductLiteEntity>> {
-        return productLiteDao.getVisitedProductsByPage(pageIndex, pageSize)
+    fun getVisitedProducts(onlyFavorites: Boolean, pageIndex: Int, pageSize: Int): Maybe<List<ProductLiteEntity>> {
+        return productLiteDao.getVisitedProductsByPage(onlyFavorites, pageIndex, pageSize)
     }
 
     //Запрос в Избранных ли продукт
     fun isProductInFavorites(productId: Int) : Single<Boolean> = productLiteDao.isProductInFavorite(productId)
+
+    //Удаление из избранного
+    fun deleteProductFavorite(id: Int) : Int = productLiteDao.deleteProductFavorite(id)
+
+    //Удаление посещенного
+    fun deleteProduct(id: Int) : Int = deleteProduct(id)
 
 
     fun putFilms(productList: List<ProductLiteEntity>) {
