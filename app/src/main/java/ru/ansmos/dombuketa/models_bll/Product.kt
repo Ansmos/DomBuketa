@@ -8,7 +8,8 @@ data class Product (
     val id: Int,
     val name: String,
     val price : Price,
-    val imageCart: Image,
-    val imageGalary: List<Image>,
-    val description: String
+    val imageCart: Image?,
+    val imageGalary: List<Image>?,
+    val description: String,
+    var isInFavorites: Boolean = false,
 ) : Parcelable

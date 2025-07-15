@@ -18,13 +18,15 @@ import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.databinding.FragmentDeliveresBinding
 import ru.ansmos.dombuketa.helpers.AutoDisposable
 import ru.ansmos.dombuketa.helpers.addTo
+import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.viewmodels.DeliveresViewModel
-import ru.ansmos.dombuketa.views.rw.Product_H_Adapter
+import ru.ansmos.dombuketa.views.MainActivity
+import ru.ansmos.dombuketa.views.rw.Product_V_Adapter
 
 class DeliveresFragment : Fragment() {
     private lateinit var binding: FragmentDeliveresBinding
     private val autoDisposable = AutoDisposable()
-    private lateinit var productAdapter : Product_H_Adapter
+    private lateinit var productAdapter : Product_V_Adapter
 
     private val viewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(DeliveresViewModel::class.java)
@@ -43,6 +45,7 @@ class DeliveresFragment : Fragment() {
             .findViewById(R.id.delivers_fragment_root),R.layout.catalog_merge, requireContext()))
         initRV()
         initPullToRefresh()
+        viewModel.refreshProductss()
         viewModel.productListByTag
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -70,7 +73,11 @@ class DeliveresFragment : Fragment() {
         val rv = binding.deliversFragmentRoot.findViewById<RecyclerView>(R.id.deliver_recycler)
 
         rv.apply {
-            productAdapter = Product_H_Adapter()
+            productAdapter = Product_V_Adapter(object : Product_V_Adapter.IOnItemClixkListener{
+                override fun click(product: Product) {
+                    (requireActivity() as MainActivity).launchDetailsFrag(product)
+                }
+            })
             adapter = productAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
