@@ -4,12 +4,14 @@ import androidx.room.Query
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import ru.ansmos.dombuketa.db_module.dao.INotificationDao
 import ru.ansmos.dombuketa.db_module.dao.IProductLiteDao
+import ru.ansmos.dombuketa.db_module.entity.NotificationEntity
 import ru.ansmos.dombuketa.db_module.entity.ProductLiteEntity
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class MainRepository @Inject constructor(private val productLiteDao: IProductLiteDao)  {
+class MainRepository @Inject constructor(private val productLiteDao: IProductLiteDao, private val notificationDao: INotificationDao)  {
     // Добавление/обновление просмотренного продукта
     fun updataProductLite(productLiteEntity: ProductLiteEntity){
         productLiteDao.updateVisitedProducts(productLiteEntity)
@@ -51,10 +53,24 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
         return deletedItemsCount
     }
 
+// Нотификации ********************************************
 
+    fun getAllNotifications(): Observable<List<NotificationEntity>> = notificationDao.getAllNotifications()
 
-//    fun getDataPDS(startPosition: Int, loadSize: Int): DataSource.Factory<Int, FilmEntity> {
-//        return productLiteDao.getFilmsByPage_Paging(startPosition, loadSize)
-//    }
+    fun getNotificationById(id: Int) : Single<NotificationEntity>? {
+        return notificationDao.getNotificationById(id)
+    }
+
+    fun insertNotification(notification: NotificationEntity) {
+        notificationDao.insertNotification(notification)
+    }
+
+    fun updateNotification(notification: NotificationEntity) {
+        // Для упрощения деактивирую старый и вставляю новый
+        notificationDao.cancelNotification(notification.productId)
+        notificationDao.insertNotification(notification)
+    }
+
+    fun cancelNotification(film_id: Int) = notificationDao.cancelNotification(film_id)
 
 }

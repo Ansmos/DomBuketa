@@ -6,10 +6,12 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import ru.ansmos.dombuketa.converters.ConverterNotification
 import ru.ansmos.dombuketa.converters.ConverterProduct
 import ru.ansmos.dombuketa.converters.ConverterProductListByTag
 import ru.ansmos.dombuketa.converters.ConverterTag
 import ru.ansmos.dombuketa.db_module.repo.MainRepository
+import ru.ansmos.dombuketa.models_bll.Notification
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.models_bll.ProductListByTag
 import ru.ansmos.dombuketa.models_bll.Tag
@@ -101,24 +103,8 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
     }
     // Из БД
     fun isProductInFavorites(productId: Int) : Single<Boolean> = repo.isProductInFavorites(productId)
-    // Из БД
-//    fun getVisitedProductList(onlyFavorites: Boolean, pageIndex: Int, pageSize: Int) {
-//        repo.getVisitedProducts(onlyFavorites, pageIndex, pageSize)
-//            .subscribeOn(Schedulers.io())
-//            .map {
-//                ConverterProduct.ProductLiteEntity_DTO_List(it)
-//            }
-//            .subscribe({
-//                if (!onlyFavorites) {
-//                    productListByTag.onNext(it)
-//                } else {
-//                    productListFavorites.onNext(it)
-//                }
-//            }, {
-//                it.printStackTrace()
-//            })
-//    }
 
+    // Из БД
     fun getVisitedProductList_DB(onlyFavorites: Boolean, pageIndex: Int, pageSize: Int) : Maybe<List<Product>> {
         return repo.getVisitedProducts(onlyFavorites, pageIndex, pageSize)
             .subscribeOn(Schedulers.io())
@@ -145,6 +131,33 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
                 it.printStackTrace()
             })
 
+// Нотификации **************************************************
+
+    fun getNotifications(): Observable<List<Notification>> {
+        return ConverterNotification.Entity_DTO_ListRx(repo.getAllNotifications())
+    }
+
+    fun getNotificationById(id: Int) : Single<Notification>? {
+        return repo.getNotificationById(id)
+            ?.subscribeOn(Schedulers.io())
+            ?.map {
+                ConverterNotification.Entity_DTO(it)
+            }
+    }
+
+    fun updateNotification(notification: Notification) {
+        Single.just(notification)
+            .observeOn(Schedulers.io())
+            .map {
+                it.toEntity()
+            }
+            .subscribe( {
+                repo.updateNotification(it)
+                println("!!! Нотификация Обновлена в БД")
+            },{
+                println("!!! ОШИБКА: Нотификация не обновлена в БД" + it.message)
+            })
+    }
 
 
 }

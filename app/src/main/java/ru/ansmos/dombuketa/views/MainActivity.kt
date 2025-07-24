@@ -22,9 +22,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         // Вызываем главный фрагмент
         initNavMenu()
-        val fragmentHome = checkFragExist("home")
-        changeFrag(fragmentHome ?: HomeFragment(), "home")
 
+
+
+        // Проверяем, если есть Товар в интенте от нотификации
+        val productFromNotification = intent.getParcelableExtra<Product>("product")
+        // Если есть, запускаем детальный фрагмент, если нет, - основной
+        if (productFromNotification != null){
+            launchDetailsFrag(productFromNotification)
+        } else {
+            // запускаем фрагмент при окончании анимации
+            val tag = "home"
+            val fragment = checkFragExist(tag)
+            changeFrag(fragment?: HomeFragment(), tag)
+        }
         Toast.makeText(this,
             Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID).toString(),
             Toast.LENGTH_LONG).show()
