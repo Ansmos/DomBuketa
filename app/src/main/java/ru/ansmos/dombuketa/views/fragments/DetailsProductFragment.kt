@@ -28,6 +28,7 @@ import ru.ansmos.dombuketa.helpers.addTo
 import ru.ansmos.dombuketa.models_bll.Price
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.net_module.ApiConstants
+import ru.ansmos.dombuketa.services.NotificationHelper
 import ru.ansmos.dombuketa.viewmodels.DetailsProductViewModel
 
 class DetailsProductFragment : Fragment() {
@@ -127,6 +128,10 @@ class DetailsProductFragment : Fragment() {
                 viewModel.updateVisitedProduct(product)
             }
         }
+        requireActivity().findViewById<FloatingActionButton>(R.id.later_fab).setOnClickListener {
+            NotificationHelper.notificationSet(requireContext(), product)
+        }
+
         requireActivity().findViewById<FloatingActionButton>(R.id.share_fab).setOnClickListener {
             //Создаем интент
             val intent = Intent()

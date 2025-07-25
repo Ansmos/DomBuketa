@@ -1,12 +1,14 @@
 package ru.ansmos.dombuketa.converters
 
+import io.reactivex.rxjava3.core.Observable
 import ru.ansmos.dombuketa.R
+import ru.ansmos.dombuketa.db_module.entity.NotificationEntity
 import ru.ansmos.dombuketa.db_module.entity.ProductLiteEntity
 import ru.ansmos.dombuketa.models_bll.Image
+import ru.ansmos.dombuketa.models_bll.Notification
 import ru.ansmos.dombuketa.models_bll.Price
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.net_module.models_api.Product_api
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -83,4 +85,6 @@ object ConverterProduct {
     fun empty() = Product(0, R.string.fragment_details_no_product.toString(),
         Price(0,0.0,0.0,0.0,0.0,false),
         null, null, R.string.fragment_details_no_product.toString(), false)
+
+// Конвертеры для Notifications
 }

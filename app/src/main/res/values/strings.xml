@@ -7,6 +7,7 @@
     <string name="menu_settings_title_text">Настройки</string>
 
     <string name="fragment_details.btn_menu_fav">Избранное</string>
+    <string name="fragment_details.btn_menu_later">Напомнить</string>
     <string name="fragment_details.btn_menu_share">Поделиться</string>
     <string name="fragment_details.no_product">Товар временно отсутствует</string>
 

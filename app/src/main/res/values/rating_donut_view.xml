@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RatingDonutView">
+        <attr name="progress" format="integer"></attr>
+        <attr name="stroke" format="float"></attr>
+        <attr name="price" format="float"></attr>
+        <attr name="pricePrev" format="float"></attr>
+    </declare-styleable>
+</resources>

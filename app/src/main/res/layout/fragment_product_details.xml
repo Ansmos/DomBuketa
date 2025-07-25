@@ -61,6 +61,19 @@
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/later_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fragment_details.layout_margin.fab2"
+        android:backgroundTint="@color/background_shoping_cart_end_color"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|right"
+        app:srcCompat="@drawable/ic_outline_watch_later_24"
+        android:tint="@android:color/white"
+        android:accessibilityPaneTitle="@string/fragment_details.btn_menu_later">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/share_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,12 +101,14 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/nested_scroll_view_margun_top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
             android:id="@+id/details_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_margin="@dimen/fragment_details.layout_margin.textview"
             android:text="Товар временно отсутствует или снят с производства."
             tools:text="@tools:sample/lorem/random">

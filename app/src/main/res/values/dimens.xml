@@ -19,6 +19,7 @@
 
     <!-- details product-->
     <dimen name="fragment_details.layout_margin.fab1">16dp</dimen>
+    <dimen name="fragment_details.layout_margin.fab2">86dp</dimen>
     <dimen name="fragment_details.layout_margin.textview">8dp</dimen>
     <dimen name="fragment_details.h.appbar.layout">200dp</dimen>
     <dimen name="fragment_details.h.appbar.collapsing_toolbar_layout">60dp</dimen>
@@ -26,5 +27,6 @@
     <dimen name="item_carousel_fav_top">10dp</dimen>
     <dimen name="item_simple_price_margun_top">110dp</dimen>
     <dimen name="item_simple_price_margun_left">170dp</dimen>
+    <dimen name="nested_scroll_view_margun_top">20dp</dimen>
 
 </resources>

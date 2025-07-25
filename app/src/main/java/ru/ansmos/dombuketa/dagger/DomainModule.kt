@@ -6,6 +6,7 @@ import dagger.Provides
 import ru.ansmos.dombuketa.db_module.repo.MainRepository
 import ru.ansmos.dombuketa.domain.Interactor
 import ru.ansmos.dombuketa.net_module.api.IDomBuketaApi2
+import ru.ansmos.dombuketa.services.NotificationHelper
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,4 +18,8 @@ class DomainModule(val context: Context) {
     @Singleton
     @Provides
     fun provideInteractor(domBuketaApi2: IDomBuketaApi2, repo: MainRepository) = Interactor(domBuketaApi2, repo)
+
+    @Singleton
+    @Provides
+    fun provideNotificationHelper() = NotificationHelper
 }
