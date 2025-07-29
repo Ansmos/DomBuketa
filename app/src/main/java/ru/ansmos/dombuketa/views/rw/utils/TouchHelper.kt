@@ -1,16 +1,11 @@
-package ru.ansmos.dombuketa.utils
+package ru.ansmos.dombuketa.views.rw.utils
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.ansmos.dombuketa.App
-import ru.ansmos.dombuketa.domain.Interactor
-import ru.ansmos.dombuketa.views.rw.Product_H_Adapter
-import ru.ansmos.dombuketa.views.rw.Product_H_ViewHolder
-import ru.ansmos.dombuketa.views.rw.Product_V_Adapter
-import ru.ansmos.dombuketa.views.rw.Product_V_ViewHolder
-import javax.inject.Inject
+import ru.ansmos.dombuketa.views.rw.*
 
-class ProductRvTouchHelper(val adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) : ItemTouchHelper.Callback() {
+class TouchHelper(val adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) : ItemTouchHelper.Callback() {
     val interactor = App.instance.dagger.getInteractor()
 
     override fun isLongPressDragEnabled(): Boolean = false //Не поддерживается
@@ -34,6 +29,11 @@ class ProductRvTouchHelper(val adapter: RecyclerView.Adapter<RecyclerView.ViewHo
             is Product_H_ViewHolder ->{
                 interactor.removeVisited(
                     (adapter as Product_H_Adapter).removeItemVisited(viewHolder.bindingAdapterPosition))
+
+            }
+            is Notification_ViewHolder ->{
+                interactor.cancelNotification(
+                    (adapter as Notification_Adapter).removeNotification(viewHolder.bindingAdapterPosition))
 
             }
         }

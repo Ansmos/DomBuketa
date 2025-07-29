@@ -1,6 +1,5 @@
 package ru.ansmos.dombuketa.db_module.repo
 
-import androidx.room.Query
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -71,6 +70,6 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
         notificationDao.insertNotification(notification)
     }
 
-    fun cancelNotification(film_id: Int) = notificationDao.cancelNotification(film_id)
+    fun cancelNotification(notification_id: Int) = notificationDao.cancelNotification(notification_id)
 
 }

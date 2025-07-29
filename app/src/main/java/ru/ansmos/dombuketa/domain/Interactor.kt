@@ -159,5 +159,14 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
             })
     }
 
-
+    fun cancelNotification(notification_id: Int){
+        Single.just(true)
+            .observeOn(Schedulers.io())
+            .subscribe( {
+                repo.cancelNotification(notification_id)
+                println("!!! Нотификация отмененав в БД")
+            },{
+                println("!!! ОШИБКА: Нотификация не отменена БД" + it.message)
+            })
+    }
 }

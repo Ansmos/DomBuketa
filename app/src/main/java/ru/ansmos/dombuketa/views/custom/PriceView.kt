@@ -1,4 +1,4 @@
-package ru.ansmos.dombuketa.views
+package ru.ansmos.dombuketa.views.custom
 
 import android.content.Context
 import android.graphics.Canvas

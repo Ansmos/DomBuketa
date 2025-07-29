@@ -62,10 +62,17 @@ class MainActivity : AppCompatActivity() {
                     changeFrag(fragment?: ShoppingCartFragment(), tag)
                     true
                 }
-                R.id.nav_nemu_deliver ->{
-                    val tag = "deliver"
+                // Оставил для дальнейшей разработки
+//                R.id.nav_nemu_deliver ->{
+//                    val tag = "deliver"
+//                    val fragment = checkFragExist(tag)
+//                    changeFrag(fragment?: DeliveresFragment(), tag)
+//                    true
+//                }
+                R.id.nav_nemu_later ->{
+                    val tag = "later"
                     val fragment = checkFragExist(tag)
-                    changeFrag(fragment?: DeliveresFragment(), tag)
+                    changeFrag(fragment?: LaterFragment(), tag)
                     true
                 }
                 R.id.nav_nemu_settings ->{

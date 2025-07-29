@@ -15,10 +15,15 @@
         android:icon="@drawable/ic_outline_shopping_cart_24"
         android:title="@string/menu_shopping_cart_title_text"
         app:showAsAction="withText"></item>
+<!--    <item-->
+<!--        android:id="@+id/nav_nemu_deliver"-->
+<!--        android:icon="@drawable/ic_outline_delivery_dining_24"-->
+<!--        android:title="@string/menu_delivery_text"-->
+<!--        app:showAsAction="withText"></item>-->
     <item
-        android:id="@+id/nav_nemu_deliver"
-        android:icon="@drawable/ic_outline_delivery_dining_24"
-        android:title="@string/menu_delivery_text"
+        android:id="@+id/nav_nemu_later"
+        android:icon="@drawable/ic_outline_watch_later_24"
+        android:title="@string/menu_later_text"
         app:showAsAction="withText"></item>
     <item
         android:id="@+id/nav_nemu_settings"

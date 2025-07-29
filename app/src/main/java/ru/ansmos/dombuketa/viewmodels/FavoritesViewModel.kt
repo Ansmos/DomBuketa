@@ -18,11 +18,6 @@ class FavoritesViewModel : ViewModel() {
     init{
         App.instance.dagger.inject(this)
         productListVisited = interactor.getVisitedProductList_DB(false,0, 100)
-        //productListfavorites = interactor.productListFavorites
         productListfavorites = interactor.getVisitedProductList_DB(true,0, 100)
-        //refreshVisitedFavoritesProducts(true)
-        //refreshVisitedFavoritesProducts(false)
     }
-
-    //fun refreshVisitedFavoritesProducts(onlyFavorites: Boolean) = interactor.getVisitedProductList(onlyFavorites,0,100)
 }

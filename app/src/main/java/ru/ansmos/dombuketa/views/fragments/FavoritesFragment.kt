@@ -15,7 +15,7 @@ import ru.ansmos.dombuketa.databinding.FragmentFavoritesBinding
 import ru.ansmos.dombuketa.helpers.AutoDisposable
 import ru.ansmos.dombuketa.helpers.addTo
 import ru.ansmos.dombuketa.models_bll.Product
-import ru.ansmos.dombuketa.utils.ProductRvTouchHelper
+import ru.ansmos.dombuketa.views.rw.utils.TouchHelper
 import ru.ansmos.dombuketa.viewmodels.FavoritesViewModel
 import ru.ansmos.dombuketa.views.MainActivity
 import ru.ansmos.dombuketa.views.rw.Product_H_Adapter
@@ -86,7 +86,7 @@ class FavoritesFragment : Fragment() {
             adapter = productAdapterFav
             layoutManager = LinearLayoutManager(requireContext())
             //Удаление через смахивание
-            val callback = ProductRvTouchHelper(productAdapterFav)
+            val callback = TouchHelper(productAdapterFav)
             val touchHelper = ItemTouchHelper(callback)
             touchHelper.attachToRecyclerView(this)
         }
