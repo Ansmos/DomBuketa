@@ -1,6 +1,5 @@
 package ru.ansmos.dombuketa.db_module.repo
 
-import androidx.room.Query
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -28,23 +27,9 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
     fun deleteProductFavorite(id: Int) : Int = productLiteDao.deleteProductFavorite(id)
 
     //Удаление посещенного
-    fun deleteProduct(id: Int) : Int = deleteProduct(id)
+    fun deleteProductVisited(id: Int) : Int = deleteProductVisited(id)
 
-
-    fun putFilms(productList: List<ProductLiteEntity>) {
-        //Запросы в БД должны быть в отдельном потоке
-        Executors.newSingleThreadExecutor().execute {
-            productLiteDao.insertAll(productList)
-        }
-    }
-
-
-//    fun getFilmsPaging(): androidx.paging.DataSource.Factory<Int, ProductLiteEntity> {
-//        return productLiteDao.getFilms_Paging()
-//    }
-
-
-    fun clearAllFilms() : Int {
+    fun clearProductVisited() : Int {
         var deletedItemsCount : Int = 0
         Executors.newSingleThreadExecutor().execute {
              deletedItemsCount = productLiteDao.clearAll()
@@ -71,6 +56,6 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
         notificationDao.insertNotification(notification)
     }
 
-    fun cancelNotification(film_id: Int) = notificationDao.cancelNotification(film_id)
+    fun cancelNotification(notification_id: Int) = notificationDao.cancelNotification(notification_id)
 
 }

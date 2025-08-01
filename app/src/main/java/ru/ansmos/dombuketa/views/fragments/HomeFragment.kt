@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.xwray.groupie.Section
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import ru.ansmos.dombuketa.App
 import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.converters.ConverterProductListByTag
 import ru.ansmos.dombuketa.databinding.FragmentHomeBinding
@@ -52,6 +54,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if( App.instance.dagger.getInteractor().getDarkModeFromPreferences()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
         initAnimationEnter()
         initRV()
         initPullToRefresh()

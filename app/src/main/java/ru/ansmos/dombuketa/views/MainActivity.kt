@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import ru.ansmos.dombuketa.App
 import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.databinding.ActivityMainBinding
 import ru.ansmos.dombuketa.models_bll.Product
@@ -13,17 +15,17 @@ import ru.ansmos.dombuketa.views.fragments.*
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     var firstStart: Boolean = true
-    var defaultFragmentTag: String = ""
+    //var defaultFragmentTag: String = "home"
     var previoustFragmentTag: String = ""  //Для фракмента с деталями, неизвестно, из какого фрагмента он вызван
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         // Вызываем главный фрагмент
         initNavMenu()
-
-
 
         // Проверяем, если есть Товар в интенте от нотификации
         val productFromNotification = intent.getParcelableExtra<Product>("product")
@@ -32,9 +34,9 @@ class MainActivity : AppCompatActivity() {
             launchDetailsFrag(productFromNotification)
         } else {
             // запускаем фрагмент при окончании анимации
-            val tag = "home"
-            val fragment = checkFragExist(tag)
-            changeFrag(fragment?: HomeFragment(), tag)
+            //val tag = "home"
+            val fragment = checkFragExist(App.instance.defaultFragmentTag)
+            changeFrag(fragment?: HomeFragment(), App.instance.defaultFragmentTag)
         }
         Toast.makeText(this,
             Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID).toString(),
@@ -62,16 +64,25 @@ class MainActivity : AppCompatActivity() {
                     changeFrag(fragment?: ShoppingCartFragment(), tag)
                     true
                 }
-                R.id.nav_nemu_deliver ->{
-                    val tag = "deliver"
+                // Оставил для дальнейшей разработки
+//                R.id.nav_nemu_deliver ->{
+//                    val tag = "deliver"
+//                    val fragment = checkFragExist(tag)
+//                    changeFrag(fragment?: DeliveresFragment(), tag)
+//                    true
+//                }
+                R.id.nav_nemu_later ->{
+                    val tag = "later"
                     val fragment = checkFragExist(tag)
-                    changeFrag(fragment?: DeliveresFragment(), tag)
+                    changeFrag(fragment?: LaterFragment(), tag)
                     true
                 }
                 R.id.nav_nemu_settings ->{
                     val tag = "settings"
                     val fragment = checkFragExist(tag)
-                    changeFrag(fragment?: SettingsFragment(), tag)
+                    // Оставил для дальнейшей разработки
+                    //changeFrag(fragment?: SettingsFragment(), tag)
+                    changeFrag(fragment?: SetFragment(), tag)
                     true
                 }
                 else -> false
@@ -86,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     private fun changeFrag(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().replace(R.id.fragment_placeholder, fragment, tag)
             .addToBackStack(null).commit()
-        defaultFragmentTag = tag
+        App.instance.defaultFragmentTag = tag
     }
 
     fun launchDetailsFrag(product: Product) {
@@ -101,8 +112,8 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.fragment_placeholder, fragment)
             .addToBackStack(null).commit()
-        previoustFragmentTag = defaultFragmentTag
-        defaultFragmentTag = "details_product"
+        previoustFragmentTag = App.instance.defaultFragmentTag
+        App.instance.defaultFragmentTag = "details_product"
 
     }
 

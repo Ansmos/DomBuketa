@@ -15,7 +15,9 @@ interface IAppComponent {
     fun inject(favoritesViewModel: FavoritesViewModel)
     fun inject(deliversViewModel: DeliveresViewModel)
     fun inject(settingsViewModel: SettingsViewModel)
+    fun inject(setViewModel: SetViewModel)
     fun inject(detailsProductViewModel: DetailsProductViewModel)
+    fun inject(laterViewModel: LaterViewModel)
 
     //Для разнообразия таким способом
     fun getNotificationHelper() : NotificationHelper

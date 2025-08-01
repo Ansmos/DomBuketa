@@ -17,8 +17,12 @@ import ru.ansmos.dombuketa.models_bll.ProductListByTag
 import ru.ansmos.dombuketa.models_bll.Tag
 import ru.ansmos.dombuketa.net_module.ApiKey
 import ru.ansmos.dombuketa.net_module.api.IDomBuketaApi2
+import ru.ansmos.dombuketa.utils.PreferenceProvider
 
-class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: MainRepository) {
+class Interactor(private val retrofitService: IDomBuketaApi2,
+                 private val repo: MainRepository,
+                 private val preferences: PreferenceProvider
+) {
     val isProgressBarVisible: BehaviorSubject<Boolean> = BehaviorSubject.create()
     val productListByTagListAll: BehaviorSubject<List<ProductListByTag>> = BehaviorSubject.create()
     val productListByTag: BehaviorSubject<List<Product>> = BehaviorSubject.create()
@@ -126,10 +130,12 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
         Single.just(productId)
             .observeOn(Schedulers.io())
             .subscribe({
-                repo.deleteProduct(it)
+                repo.deleteProductVisited(it)
             },{
                 it.printStackTrace()
             })
+
+    fun clearVisited() = repo.clearProductVisited()
 
 // Нотификации **************************************************
 
@@ -159,5 +165,21 @@ class Interactor(private val retrofitService: IDomBuketaApi2, private val repo: 
             })
     }
 
+    fun cancelNotification(notification_id: Int){
+        Single.just(true)
+            .observeOn(Schedulers.io())
+            .subscribe( {
+                repo.cancelNotification(notification_id)
+                println("!!! Нотификация отмененав в БД")
+            },{
+                println("!!! ОШИБКА: Нотификация не отменена БД" + it.message)
+            })
+    }
+
+// Preferences ********************************************************
+
+    fun getDarkModeFromPreferences() = preferences.getDefNightMode()
+
+    fun saveDarkModeToPreferences(darkMode: Boolean) = preferences.setDefNightMode(darkMode)
 
 }
