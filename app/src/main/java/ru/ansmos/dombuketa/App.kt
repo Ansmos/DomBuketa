@@ -12,6 +12,8 @@ import ru.dombuketa.database_module.dagger.IContextProvider
 
 class App : Application(), IContextProvider {
     lateinit var dagger : IAppComponent
+    var defaultFragmentTag: String = "home"
+
 
     override fun onCreate() {
         super.onCreate()

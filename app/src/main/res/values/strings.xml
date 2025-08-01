@@ -13,5 +13,9 @@
     <string name="fragment_details.no_product">Товар временно отсутствует</string>
 
     <string name="fragment_favorite.title_Visited">Просмотренные подарки</string>
+    <string name="fragment_set.text_darkmode">Темный режим</string>
+    <string name="fragment_set.text_lightmode">Светлый режим</string>
+    <string name="fragment_set.clear_visited">Очистить просмотренные</string>
+    <string name="fragment_set_text_warning">Списов просмотренных был удален</string>
 
 </resources>

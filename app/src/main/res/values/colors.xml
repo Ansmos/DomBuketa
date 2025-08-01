@@ -12,9 +12,14 @@
     <color name="bottom_nav_background">#FAFAFA</color>
 
     <color name="background_home_start_color">#FAFAF8</color>
+    <color name="background_home_start_color_night">#06135A</color>
     <color name="background_home_end_color">#F4DDF8</color>
+    <color name="background_home_end_color_night">#2D3F3C</color>
+
     <color name="background_favorite_start_color">#FAFAF8</color>
     <color name="background_favorite_end_color">#EFF1D5</color>
+    <color name="background_favorite_end_color_night">#424518</color>
+
     <color name="background_shoping_cart_start_color">#FAFAF8</color>
     <color name="background_shoping_cart_end_color">#DDF1FA</color>
 
