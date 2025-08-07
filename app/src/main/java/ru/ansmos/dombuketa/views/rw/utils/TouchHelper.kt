@@ -27,7 +27,7 @@ class TouchHelper(val adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) : 
                     (adapter as Product_V_Adapter).removeItemFavorite(viewHolder.bindingAdapterPosition))
             }
             is Product_H_ViewHolder ->{
-                interactor.removeVisited(
+                interactor.deleteProduct_DB(
                     (adapter as Product_H_Adapter).removeItemVisited(viewHolder.bindingAdapterPosition))
 
             }

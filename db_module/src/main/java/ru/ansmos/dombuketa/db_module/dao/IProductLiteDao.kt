@@ -44,6 +44,6 @@ interface IProductLiteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(list: List<ProductLiteEntity>)
 
-    @Query("DELETE FROM visited_products")
+    @Query("DELETE FROM visited_products WHERE isInFavorites <> 1")
     fun clearAll() : Int
 }

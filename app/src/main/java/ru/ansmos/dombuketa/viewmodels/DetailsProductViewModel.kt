@@ -4,11 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import ru.ansmos.dombuketa.App
-import ru.ansmos.dombuketa.AppConstants
 import ru.ansmos.dombuketa.domain.Interactor
 import ru.ansmos.dombuketa.models_bll.Product
 import ru.ansmos.dombuketa.utils.SingleLiveEvent
@@ -23,7 +20,6 @@ class DetailsProductViewModel : ViewModel() {
     lateinit var interactor: Interactor
     val isNetworkError = SingleLiveEvent<String>()
 
-
     init {
         App.instance.dagger.inject(this)
     }
@@ -34,7 +30,10 @@ class DetailsProductViewModel : ViewModel() {
 
     fun isProductInFavorites(productId: Int) : Single<Boolean> = interactor.isProductInFavorites(productId)
 
-    fun getProductById(productId: Int): Maybe<Product> = interactor.getProductById_API(productId)
+    fun getProductById(productId: Int): Maybe<Product> =
+        interactor.getProductById_API(productId)
+
+    fun deleteCachedProduct(productId: Int) = interactor.deleteProduct_DB(productId)
 
     suspend fun loadWallpaper(url: String) : Bitmap?{
         return suspendCoroutine{

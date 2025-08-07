@@ -54,15 +54,46 @@ class DetailsProductFragment : Fragment() {
         product = arguments?.get("product") as Product
 
         viewModel.getProductById(product.id)
-            .observeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                     Log.i("frag.details.onCreated","Просмотренный продукт найден")
+                    binding.detailsToolbar.title = it.name
+
+                    if (it.id != 0){
+                        binding.price.text = it.price.priceTotal.toString()
+                        binding.detailsDescription.text = it.description
+                        if (it.imageCart != null) {
+                            Glide.with(this)
+                                .load(ApiConstants.IMAGES_URL + it.imageCart!!.path + it.imageCart!!.fileName)
+                                .centerCrop()
+                                .into(binding.detailsPoster)
+                        } else {
+                            Glide.with(this)
+                                .load(R.drawable.no_photo)
+                                .centerCrop()
+                                .into(binding.detailsPoster)
+                        }
+                    } else {
+                        binding.favFab.visibility = View.GONE
+                        binding.laterFab.visibility = View.GONE
+                        binding.shareFab.visibility = View.GONE
+                        binding.price.visibility = View.GONE
+                        binding.detailsDescription.text = getResources().getString(R.string.no_product_find)
+                        Glide.with(this)
+                            .load(R.drawable.no_product)
+                            .centerCrop()
+                            .into(binding.detailsPoster)
+                        // Удалим несуществующий продукт из кеша.
+                        viewModel.deleteCachedProduct(product.id)
+                    }
                     product = it
                 },{
                     Log.e("frag.details.onCreated","Ошибка. Просмотренный продукт не найден " + it.message)
                     it.printStackTrace()
-                })
+                },{
+                    Log.e("frag.details.onCreated","onComplete ")
+
+            })
             .addTo(autoDisposable)
 
         viewModel.isProductInFavorites(product.id)
@@ -76,15 +107,15 @@ class DetailsProductFragment : Fragment() {
             .addTo(autoDisposable)
 
         initFabs()
-        binding.detailsToolbar.title = product.name
-        if (product.imageCart != null) {
-            Glide.with(this)
-                .load(ApiConstants.IMAGES_URL + product.imageCart!!.path + product.imageCart!!.fileName)
-                .centerCrop()
-                .into(binding.detailsPoster)
-        }
-        binding.detailsDescription.text = product.description
-        binding.price.text = product.price.priceTotal.toString()
+//        binding.detailsToolbar.title = product.name
+//        if (product.imageCart != null) {
+//            Glide.with(this)
+//                .load(ApiConstants.IMAGES_URL + product.imageCart!!.path + product.imageCart!!.fileName)
+//                .centerCrop()
+//                .into(binding.detailsPoster)
+//        }
+//        binding.detailsDescription.text = product.description
+//        binding.price.text = product.price.priceTotal.toString()
     }
 
 

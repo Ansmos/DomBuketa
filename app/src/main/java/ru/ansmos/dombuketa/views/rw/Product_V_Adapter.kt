@@ -41,7 +41,7 @@ class Product_V_Adapter(private val clickListener: IOnItemClixkListener): Recycl
     fun removeItemFavorite(position: Int) : Int {
         val product_id = items[position].id
         items.removeAt(position)
-        //notifyItemRemoved(position)
+        notifyItemRemoved(position)
         return product_id //Возвращаем для удаления из БД
     }
     //Интерфейс для обработки кликов

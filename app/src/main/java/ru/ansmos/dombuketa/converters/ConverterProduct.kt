@@ -1,6 +1,8 @@
 package ru.ansmos.dombuketa.converters
 
+import androidx.core.content.ContentProviderCompat.requireContext
 import io.reactivex.rxjava3.core.Observable
+import ru.ansmos.dombuketa.App
 import ru.ansmos.dombuketa.R
 import ru.ansmos.dombuketa.db_module.entity.NotificationEntity
 import ru.ansmos.dombuketa.db_module.entity.ProductLiteEntity
@@ -82,7 +84,8 @@ object ConverterProduct {
         )
     }
 
-    fun empty() = Product(0, R.string.fragment_details_no_product.toString(),
+    fun empty() = Product(0, App.instance.dagger.getContext().getResources()
+        .getString(R.string.fragment_details_no_product),
         Price(0,0.0,0.0,0.0,0.0,false),
         null, null, R.string.fragment_details_no_product.toString(), false)
 
