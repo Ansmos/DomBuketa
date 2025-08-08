@@ -53,6 +53,7 @@ class Interactor(private val retrofitService: IDomBuketaApi2,
         return retrofitService.getProductById(id, ApiKey.KEY)
             .subscribeOn(Schedulers.io())
             .map {
+                isProgressBarVisible.onNext(false)
                 if (it.id == 0){
                     ConverterProduct.empty()
                 } else {
@@ -60,6 +61,9 @@ class Interactor(private val retrofitService: IDomBuketaApi2,
                 }
             }
             .doOnError {
+                isProgressBarVisible.onNext(false)
+            }
+            .doOnComplete{
                 isProgressBarVisible.onNext(false)
             }
     }
@@ -126,11 +130,11 @@ class Interactor(private val retrofitService: IDomBuketaApi2,
                 it.printStackTrace()
             })
 
-    fun removeVisited(productId: Int) =
+    fun deleteProduct_DB(productId: Int) =
         Single.just(productId)
             .observeOn(Schedulers.io())
             .subscribe({
-                repo.deleteProductVisited(it)
+                repo.deleteProduct(it)
             },{
                 it.printStackTrace()
             })

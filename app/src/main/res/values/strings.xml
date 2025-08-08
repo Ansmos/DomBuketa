@@ -17,5 +17,6 @@
     <string name="fragment_set.text_lightmode">Светлый режим</string>
     <string name="fragment_set.clear_visited">Очистить просмотренные</string>
     <string name="fragment_set_text_warning">Списов просмотренных был удален</string>
+    <string name="no_product_find">Товар не найден</string>
 
 </resources>

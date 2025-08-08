@@ -1,5 +1,6 @@
 package ru.ansmos.dombuketa.dagger
 
+import android.content.Context
 import dagger.Component
 import ru.ansmos.dombuketa.domain.Interactor
 import ru.ansmos.dombuketa.net_module.IRemoteProvider
@@ -22,4 +23,5 @@ interface IAppComponent {
     //Для разнообразия таким способом
     fun getNotificationHelper() : NotificationHelper
     fun getInteractor() : Interactor
+    fun getContext(): Context
 }

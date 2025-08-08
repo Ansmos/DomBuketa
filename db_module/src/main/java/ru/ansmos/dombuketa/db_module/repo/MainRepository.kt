@@ -27,7 +27,7 @@ class MainRepository @Inject constructor(private val productLiteDao: IProductLit
     fun deleteProductFavorite(id: Int) : Int = productLiteDao.deleteProductFavorite(id)
 
     //Удаление посещенного
-    fun deleteProductVisited(id: Int) : Int = deleteProductVisited(id)
+    fun deleteProduct(id: Int) : Int = productLiteDao.deleteProduct(id)
 
     fun clearProductVisited() : Int {
         var deletedItemsCount : Int = 0
